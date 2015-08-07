@@ -28,18 +28,18 @@ gulp.task('bower',function(){
 	return gulp.src(mainBowerFiles(),{
 		base: 'bower_components'
 	})
-	.pipe(gulp.dest('app/public/lib'));
+	.pipe(gulp.dest('public/lib'));
 });
 
 // copying less files
 gulp.task('bootstrap:prepareLess', ['bower'], function() {
   return gulp.src('less/bootstrap/variables.less')
-    .pipe(gulp.dest('app/public/lib/bootstrap/less'));
+    .pipe(gulp.dest('public/lib/bootstrap/less'));
 });
 gulp.task('bootstrap:compileLess', ['bootstrap:prepareLess'], function() {
-  return gulp.src('app/public/lib/bootstrap/less/bootstrap.less')
+  return gulp.src('public/lib/bootstrap/less/bootstrap.less')
     .pipe(less())
-    .pipe(gulp.dest('app/public/lib/bootstrap/dist/css'));
+    .pipe(gulp.dest('public/lib/bootstrap/dist/css'));
 });
 
 
@@ -49,25 +49,38 @@ gulp.task('bootstrap:compileLess', ['bootstrap:prepareLess'], function() {
 
 // concatinatind ang minifying css
 gulp.task('minifyCss',function(){
-	return gulp.src('app/content/css/*.css')
+	return gulp.src('content/css/*.css')
 	.pipe(sourcemaps.init())
 	.pipe(concat('style.css'))
 	.pipe(rename({suffix: '.min'}))
 	.pipe(minifyCss({compatibility: 'ie8'}))
 	.pipe(sourcemaps.write('./'))
-	.pipe(gulp.dest('app/content'));
+	.pipe(gulp.dest('content'));
 });
 
 
 // concatinating ang uglifying js files
-gulp.task('scripts',function(){
-	return gulp.src('app/scripts/js/*.js')
+
+//app scripts
+gulp.task('appscripts',function(){
+	return gulp.src('app/**/*.js')
+	.pipe(sourcemaps.init())
+	.pipe(concat('appScripts.js'))
+	.pipe(rename({suffix: '.min'}))
+	.pipe(uglify())
+	.pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest('scripts/js'));
+});
+
+//all js
+gulp.task('scripts',['appscripts'],function(){
+	return gulp.src('scripts/js/*.js')
 	.pipe(sourcemaps.init())
 	.pipe(concat('scripts.js'))
 	.pipe(rename({suffix: '.min'}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write('./'))
-	.pipe(gulp.dest('app/scripts'));
+	.pipe(gulp.dest('scripts'));
 });
 
 
@@ -78,17 +91,17 @@ gulp.task('jquery',function(){
 	.pipe(rename({suffix: '.min'}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write('./'))
-	.pipe(gulp.dest('app/scripts/plugins'));
+	.pipe(gulp.dest('scripts/plugins'));
 });
 
 // coping angular js
-gulp.task('angular',['angular-route'],function(){
+gulp.task('angular',['angular-route','angular-resource'],function(){
 	return gulp.src('bower_components/angular/angular.js')
 	.pipe(sourcemaps.init())
 	.pipe(rename({suffix:".min"}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write('./'))
-	.pipe(gulp.dest('app/scripts/plugins'));
+	.pipe(gulp.dest('scripts/plugins'));
 });
 
 
@@ -99,19 +112,29 @@ gulp.task('angular-route',function(){
 	.pipe(rename({suffix:".min"}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write('./'))
-	.pipe(gulp.dest('app/scripts/plugins'));
+	.pipe(gulp.dest('scripts/plugins'));
+});
+
+// coping angular resource
+gulp.task('angular-resource',function(){
+	return gulp.src('bower_components/angular-resource/angular-resource.js')
+	.pipe(sourcemaps.init())
+	.pipe(rename({suffix:".min"}))
+	.pipe(uglify())
+	.pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest('scripts/plugins'));
 });
 
 // watch and reload browser task
 gulp.task('serve', ['minifyCss', 'scripts'], function() {
 
 
-    gulp.watch("app/content/css/*.css", ['minifyCss']);
-    gulp.watch("app/content/style.min.css").on('change', browserSync.reload);
-    gulp.watch("app/scripts/js/*.js", ['scripts']);
-    gulp.watch("app/scripts/scripts.min.js").on('change', browserSync.reload);
-    gulp.watch("app/**/*.html").on('change', browserSync.reload);
-    gulp.watch("app/**/*.json").on('change', browserSync.reload);
+    gulp.watch("content/css/*.css", ['minifyCss']);
+    gulp.watch("content/style.min.css").on('change', browserSync.reload);
+    gulp.watch("./**/*.js", ['scripts']);
+    gulp.watch("scripts/scripts.min.js").on('change', browserSync.reload);
+    gulp.watch("./**/*.html").on('change', browserSync.reload);
+    gulp.watch("./**/*.json").on('change', browserSync.reload);
     
     browserSync.init({
         server: "./app"

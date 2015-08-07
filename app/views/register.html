@@ -1,0 +1,27 @@
+<div class="jumbotron col-md-6 col-md-offset-3">
+	<form name="regform" nnovalidate>
+	  <div class="form-group">
+	    <label for="exampleInputName">Name</label>
+	    <input type="text" class="form-control" name="name" id="exampleInputName" placeholder="name" required ng-model="user.name" ng-minlength="3" name-required>
+	  </div>
+	  <div class="form-group">
+	    <label for="exampleInputEmail1">Email address</label>
+	    <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Email" required ng-model="user.email" email-required-valid>
+	  </div>
+	  <div class="form-group">
+	    <label for="exampleInputPassword1">Password</label>
+	    <input type="password" id='password' name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-required ng-model="user.password" ng-minlength="6" pass-required>
+	  </div>
+	   <div class="form-group">
+	    <label for="password">Password Again</label>
+	    <input type="password" name="passagain" class="form-control" id="passagain" placeholder="Password Again" ng-required ng-model="user.again" ng-minlength="6" pw-check="password" >
+	  </div>
+	  <div class="checkbox">
+	    <label>
+	      <input type="checkbox"> Agree with term and conditions
+	    </label>
+	  </div>
+	  <button type="submit" class="btn btn-default" ng-disabled="regfrom.$error || regform.$invalid">Register</button>
+	  <!-- <a class="btn btn-default" title="delete" ng-click="delete()" confirm>Reg</a> -->
+	</form>
+</div>		
