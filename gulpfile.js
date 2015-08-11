@@ -95,7 +95,7 @@ gulp.task('jquery',function(){
 });
 
 // coping angular js
-gulp.task('angular',['angular-route','angular-resource'],function(){
+gulp.task('angular',['angular-route','angular-resource','pagination'],function(){
 	return gulp.src('bower_components/angular/angular.js')
 	.pipe(sourcemaps.init())
 	.pipe(rename({suffix:".min"}))
@@ -125,6 +125,17 @@ gulp.task('angular-resource',function(){
 	.pipe(gulp.dest('scripts/plugins'));
 });
 
+// coping angular resource
+gulp.task('pagination',function(){
+	return gulp.src('bower_components/angular-utils-pagination/dirPagination.js')
+	.pipe(sourcemaps.init())
+	.pipe(rename({suffix:".min"}))
+	.pipe(uglify())
+	.pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest('scripts/plugins'));
+});
+
+
 // watch and reload browser task
 gulp.task('serve', ['minifyCss', 'scripts'], function() {
 
@@ -137,7 +148,7 @@ gulp.task('serve', ['minifyCss', 'scripts'], function() {
     gulp.watch("./**/*.json").on('change', browserSync.reload);
     
     browserSync.init({
-        server: "./app"
+        server: "./"
     });
 });
 

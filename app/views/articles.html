@@ -1,4 +1,21 @@
-
-<div class="container-fluid jumbotron" ng-repeat="article in articles | orderBy:'-id'">
-	<div some-blog-articles></div>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<h3 class="push-left">Search <input type="text" name="search" ng-model="articleSearch" /></h3>
+		<h3>Order By 
+			<select ng-model="orderArticle">
+				<option value="title">Name ASC</option>
+				<option value="-title">Name DESC</option>
+				<option value="id">Identificator ASC</option>
+				<option value="-id">Identificator DESC</option>
+			</select>
+		</h3>
+	</div>
 </div>
+
+<div class="container-fluid jumbotron" dir-paginate="article in articles | itemsPerPage:3 | orderBy:orderArticle | filter:articleSearch">
+    <div some-blog-articles></div>
+</div>
+
+
+<!--pagination-->
+<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"  ></dir-pagination-controls>

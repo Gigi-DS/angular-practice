@@ -3,22 +3,26 @@
  */
 blogApp.config(['$routeProvider',function($routeProvider){
 	$routeProvider.
-	when('/app',{
+	when('/',{
 		templateUrl: 'app/views/home.html',
 		controller: 'homeCtrl'
 	})
-	.when('/app/articles',{
+	.when('/articles',{
 		templateUrl: "app/views/articles.html",
 		controller: 'articlesCtrl'
 	})
-	.when('/app/article/:articleId',{
+	.when('/article/:articleId',{
 		templateUrl: 'app/views/article.html',
 		controller: 'articleCtrl'
 	}).
-	when('/app/register',{
+	when('/register',{
 		templateUrl: 'app/views/register.html',
 		controller: 'registerCtrl'
 	})
+    .when('/addarticle',{
+        templateUrl: 'app/views/addarticle.html',
+        controller: 'addArticleCtrl'
+    })
 	.otherwise({
 		redirectTo:'app/'
 	});

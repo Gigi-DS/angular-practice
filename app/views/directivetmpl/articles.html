@@ -1,4 +1,4 @@
-<h3>{{article.title}}</h3>
+<span ng-attr-id="{{article.id}}" ng-click="removeArticle(article.id)">Remove</span><h3>{{article.title}}</h3>
 <img ng-src="img/{{article.img}}" class="atrImg" />
 <div class="container">
 	{{article.short_desc}}

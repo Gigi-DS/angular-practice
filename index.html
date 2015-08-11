@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="someBlogApp">
+<html lang="en" data-ng-app="someBlogApp">
 	<head>
 		<meta charset="utf-8">
 
@@ -30,6 +30,8 @@
 		<script src="scripts/plugins/angular-route.min.js"></script>
 		<!-- connecting angular resource		 -->
 		<script src="scripts/plugins/angular-resource.min.js"></script>
+		<!-- connecting pagination -->
+		<script src="scripts/plugins/dirPagination.min.js"></script>
 		
 		<!-- connecting custom scripts -->
 		<script src="scripts/scripts.min.js"></script>
@@ -58,21 +60,21 @@
 			    <!-- Collect the nav links, forms, and other content for toggling -->
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			      <ul class="nav navbar-nav">
-			        <li><a href="#/app">Home <span class="sr-only">(current)</span></a></li>
-			        <li><a href="#/app/articles">Articles</a></li>
-			        <li><a href="#/app">Link 1</a></li>
+			        <li><a href="#/">Home <span class="sr-only">(current)</span></a></li>
+			        <li><a href="#/articles">Articles</a></li>
+			        <li><a href="#/addarticle">Add Article</a></li>
 			      </ul>
 			      <ul class="nav navbar-nav navbar-right">
-			        <li><a href="#/app">Login</a></li>
-			        <li><a href="#/app/register">Register</a></li>
+			        <li><a href="#/">Login</a></li>
+			        <li><a href="#/register">Register</a></li>
 			      </ul>
 			    </div><!-- /.navbar-collapse -->
-			  </div><!-- /.container-fluid -->
+			  </div><!-- /.container-fluid --> 
 			</nav>
 		</div><!-- .mainContainer -->
-		
+		<div class="btn btn-danger">Gigi</div> 
 		<div class="container">
-			<div ng-view></div>
+			<div data-ng-view></div>
 		</div>
 		
 	</body>

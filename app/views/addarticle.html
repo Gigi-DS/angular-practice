@@ -1,0 +1,22 @@
+<div class="jumbotron col-md-6 col-md-offset-3">
+	<form name="addarticle" novalidate>
+	  <div class="form-group">
+	    <label for="title">Title</label>
+	    <input type="text" class="form-control" name="title" id="title" placeholder="title" ng-model="article.title" ng-minlength="3">
+          <div class="alert alert-danger" role="alert" ng-show="addarticle.title.$touched && addarticle.title.$error.minlength">
+<!--             <div ng-messages="required"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> This field is required</div>-->
+              <div ng-messages="minlength"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Must enter min. 3 char.</div>
+            </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="short">Short Description</label>
+	    <textarea class="form-control" rows="3" name="short" ng-model="article.short"></textarea>
+	  </div>
+        <div class="form-group">
+	    <label for="desc">Full Description</label>
+	    <textarea class="form-control" rows="10" name="desc" ng-model="article.desc"></textarea>
+        </div>
+	  <button type="submit" class="btn btn-default" ng-disabled="addarticle.$error.minlength" ng-click="addArticle(article)">Add Article</button>
+	  <!-- <a class="btn btn-default" title="delete" ng-click="delete()" confirm>Reg</a> -->
+	</form>
+</div>		
