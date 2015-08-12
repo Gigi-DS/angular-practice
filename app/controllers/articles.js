@@ -3,7 +3,7 @@ blogApp.controller('articlesCtrl',['$scope','$window','$http','articles','LS',fu
 //	 $scope.articles=articles.query();
 //	 $http.get("jsondata/articles.json").success(function(data){
 //		 console.log(JSON.stringify(data));
-//		 LS.setData(data);
+//		 LS.setData(data,'articles-storage');
 //		 $scope.articles=data;
 //	 });
 //	
@@ -11,7 +11,7 @@ blogApp.controller('articlesCtrl',['$scope','$window','$http','articles','LS',fu
 	 $scope.orderArticle='-id';
 	 
 	 // gettind articles
-	  $scope.articles=LS.getData();
+	  $scope.articles=LS.getData('articles-storage');
 	  console.log($scope.articles);
 	  
 	  //pagination

@@ -23,6 +23,10 @@ blogApp.config(['$routeProvider',function($routeProvider){
         templateUrl: 'app/views/addarticle.html',
         controller: 'addArticleCtrl'
     })
+     .when('/persons',{
+        templateUrl: 'app/views/persons.html',
+        controller: 'personsCtrl'
+    })
 	.otherwise({
 		redirectTo:'app/'
 	});

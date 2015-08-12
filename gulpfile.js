@@ -63,23 +63,24 @@ gulp.task('minifyCss',function(){
 
 //app scripts
 gulp.task('appscripts',function(){
+    //all js files from angular app (app folder)
 	return gulp.src('app/**/*.js')
-	.pipe(sourcemaps.init())
+	.pipe(sourcemaps.init({ loadMaps: true }))
 	.pipe(concat('appScripts.js'))
-	.pipe(rename({suffix: '.min'}))
 	.pipe(uglify())
-	.pipe(sourcemaps.write('./'))
+    .pipe(rename({suffix: '.min'}))
+	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest('scripts/js'));
 });
 
 //all js
-gulp.task('scripts',['appscripts'],function(){
-	return gulp.src('scripts/js/*.js')
-	.pipe(sourcemaps.init())
+gulp.task('scripts',[],function(){
+	return gulp.src(['app/**/*.js', 'scripts/js/*.js'])
+	.pipe(sourcemaps.init({ loadMaps: true }))
 	.pipe(concat('scripts.js'))
-	.pipe(rename({suffix: '.min'}))
 	.pipe(uglify())
-	.pipe(sourcemaps.write('./'))
+    .pipe(rename({suffix: '.min'}))
+	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest('scripts'));
 });
 
@@ -137,12 +138,12 @@ gulp.task('pagination',function(){
 
 
 // watch and reload browser task
-gulp.task('serve', ['minifyCss', 'scripts'], function() {
+gulp.task('serve', ['minifyCss','scripts'], function() {
 
 
     gulp.watch("content/css/*.css", ['minifyCss']);
     gulp.watch("content/style.min.css").on('change', browserSync.reload);
-    gulp.watch("./**/*.js", ['scripts']);
+    gulp.watch("./app/**/*.js", ['scripts']);
     gulp.watch("scripts/scripts.min.js").on('change', browserSync.reload);
     gulp.watch("./**/*.html").on('change', browserSync.reload);
     gulp.watch("./**/*.json").on('change', browserSync.reload);
