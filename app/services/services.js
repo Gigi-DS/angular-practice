@@ -12,7 +12,6 @@ articleServices.factory('articles', ['$resource',
      
      return{
  		setData: function(val,name){
-            
  			$window.localStorage.setItem(name,JSON.stringify(val));
  		},
  		getData: function(name){
@@ -39,52 +38,144 @@ articleServices.factory('articles', ['$resource',
     
  }]);
 
- articleServices.factory("customerData",["$http",'LS','$q',function($http,LS,$q){
+ articleServices.factory("customerData",["$http",'LS','$q','$filter',function($http,LS,$q,$filter){
      var baseUrl = 'jsondata/articles1.json';
      var dataLoad = null; 
      init();
      return{ 
-//         ,sort,direction,pageIndex,pageSize
-        getData: function(search)
+//         ,sort,direction,pageIndex,pageSize            ,pageIndex,pageSize,sortKey, sortDirection
+        getData: function(search,sortKey, sortReverse, pageIndex, pageSize)
         {
             return dataLoad.then(function(data) {
-               // console.log(data);
                 
-                //todo filter sort 
-               // console.log(data);
-                //create search function
-                var invalidEntries =0;
+                //console.log("from getData: \n"+data);
+                //total number of pagination
+                pages = Math.ceil(data.length / pageSize);
                 
-                function searchCustomer(obj){
-                   // console.log(obj);
-                    if('name' in obj && obj.name.toLocaleLowerCase() === search.toLowerCase()){
-                        return true;
-                    }else{
-                        invalidEntries++;
-                        return false;
+                //if isset searc && search module
+                if(search){
+                  //getting data from json by name, lastName and Hobby
+                    function searchData(){
+                        var seachName = $filter('filter')(data, {name: search});
+                        var searchLastName = $filter('filter')(data, {lastname: search});
+                        var searchHobby = $filter('filter')(data, {hobby: search});
+                        var searchId = $filter('filter')(data, {id: search});
+                        
+                        //concat all results 
+                        var resultData = seachName
+                            .concat(searchLastName)
+                            .concat(searchHobby)
+                            .concat(searchId);
+                        
+                        //excluding duplicated data
+                        var filteredResults = resultData.filter(function (item,pos){return resultData.indexOf(item) == pos});
+                        return filteredResults;
                     }
+                    data = searchData();
                 }
-               // alert(invalidEntries);
-//                check if isset search params
-                if(search !=undefined){
-//                    alert(search);
-                    var arrSearch = data.filter(searchCustomer);
+                var cout = data.length;
+//                if isset sort && sortDirection && sort module
+                
+                if(sortKey){
+                    if(!sortReverse) 
+                        sortKey="-"+sortKey;
+                    else 
+                        sortKey="+"+sortKey;
                     
-                    console.log('Filtered Array\n', arrSearch);
-                    //console.log('Number of Invalid Entries = ', invalidEntries); 
-                    
-                    return arrSearch; 
+                    data = $filter('orderBy')(data,sortKey);
                 }
                 
+                //pagination
+                //begin with 
+                beginWith = ((pageIndex-1) * pageSize);
+                data = $filter("limitTo")(data,pageSize,beginWith);
+                
+              return {
+                 items: data,
+                count: cout
+              };
                 
             }
                                 );
         },
-         getAllData: function(){
+         getCount: function(){
             return dataLoad.then(function(data){
-                return data;
+                return data.length;
+            })
+         },
+         removeItem: function(removeId){
+             return dataLoad.then(function(data){
+                 console.log("data-load value "+dataLoad.$$state.value);
+                 if(removeId){
+                     customerArr=[];
+                     angular.forEach(data,function(value, key){ 
+                        if(value.id!==removeId) customerArr.push(value);
+                     });
+                     data=customerArr;
+                    console.log("after removing \n"+data);
+                     
+                     LS.clearData("cutomers");
+                     test1=LS.getData("cutomers");
+                     console.log("data after LS delete Item \n"+test1);
+                     LS.setData(customerArr,"cutomers")
+                     dataLoad.$$state.value=customerArr;
+                     
+                     test=LS.getData("cutomers");
+                     console.log("data from LS after remove \n"+test);
+                 }
+               return data;
+             
+             })
+            
+         },
+         
+         
+         
+         addCustomer: function(newCustomer){
+            return dataLoad.then(function(data){
+                id=0;
+                angular.forEach(data,function(value,key){
+                    if(value.id >id) id=value.id;
+                });
+                id=id+1;
+                newCustomer.id=id;
+                data.push(newCustomer);
+                LS.clearData("cutomers");
+                LS.setData(data,"cutomers");
+                dataLoad.$$state.value=data;
+                return cust={id: 0,name: "",lastname: "",hobby: "",age: ""};
+            })
+         },
+         
+         getCustomer: function(customerId){
+            return dataLoad.then(function(data){
+                customer=[];
+                
+                angular.forEach(data,function(value, key){
+                    if(value.id==customerId){
+                        customer=value;
+                    } 
+                })
+                return customer;
+            })
+         },
+         
+         updateCustomer: function(customer){
+            return dataLoad.then(function(data){
+                arr = [];
+                angular.forEach(data,function(value, key){
+                    if(value.id!=customer.id) arr.push(value);
+                })
+                arr.push(customer);
+                data=arr;
+                LS.clearData("cutomers");
+                LS.setData(data,"cutomers");
+                dataLoad.$$state.value=data;
+                return true;
             })
          }
+         
+        
 }
      function init(){
          customers = LS.getData("cutomers");

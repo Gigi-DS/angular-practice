@@ -1,0 +1,39 @@
+
+<div class="col-md-6 col-md-offset-3 ">
+    <div class="jumbotron">
+    <form name="addcustomer" novalidate ng-submit="addCust(cust)">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="name" ng-model="cust.name" required ng-minlength="2">
+<!--          error message-->
+          <div class="alert alert-danger" role="alert" ng-show="addcustomer.name.$touched && addcustomer.name.$error.minlength" ng-messages="addcustomer.name.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="addcustomer.name.$error.required" ng-message="addcustomer.name.$error.required">This fiel is required</li>
+                <li ng-show="addcustomer.name.$error.minlength" ng-message="addcustomer.name.$error.minlength">Must enter min. 2 chars</li>
+              </ul>
+            </div>
+      </div>
+        <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input type="text" class="form-control" id="lastname" placeholder="lastname" ng-model="cust.lastname" required>
+            <div class="alert alert-danger" role="alert" ng-show="addcustomer.lastname.$touched && addcustomer.lastname.$error.minlength" ng-messages="addcustomer.lastname.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="addcustomer.lastname.$error.required" ng-message="addcustomer.lastname.$error.required">This fiel is required</li>
+                <li ng-show="addcustomer.lastname.$error.minlength" ng-message="addcustomer.lastname.$error.minlength">Must enter min. 2 chars</li>
+              </ul>
+            </div>
+      </div>
+        <div class="form-group">
+        <label for="hobby">Hobby: </label>
+        <input type="text" class="form-control" id="hobby" placeholder="hobby" ng-model="cust.hobby" required>
+      </div>
+        <div class="form-group">
+        <label for="age">Age: </label>
+        <input type="number" class="form-control" id="age" placeholder="age" ng-model="cust.age" required>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    </div>
+</div>

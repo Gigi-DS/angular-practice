@@ -27,6 +27,14 @@ blogApp.config(['$routeProvider',function($routeProvider){
         templateUrl: 'app/views/persons.html',
         controller: 'personsCtrl'
     })
+    .when('/addcustomer',{
+        templateUrl: 'app/views/addcustomer.html',
+        controller: "addCustCtrl"
+   })
+    .when('/editcustomer/:customerId',{
+        templateUrl: 'app/views/editcustomer.html',
+        controller: "editCustCtrl"
+   })
 	.otherwise({
 		redirectTo:'app/'
 	});

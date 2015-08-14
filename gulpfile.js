@@ -14,6 +14,7 @@ var browserSync = require('browser-sync');
 var mainBowerFiles = require('main-bower-files');
 var less = require('gulp-less');
 var path = require('path');
+var plumber = require('gulp-plumber');
 
 /*===     BOOTSTRAP   ====*/
 
@@ -65,6 +66,7 @@ gulp.task('minifyCss',function(){
 gulp.task('appscripts',function(){
     //all js files from angular app (app folder)
 	return gulp.src('app/**/*.js')
+    .pipe(plumber())
 	.pipe(sourcemaps.init({ loadMaps: true }))
 	.pipe(concat('appScripts.js'))
 	.pipe(uglify())
@@ -76,6 +78,7 @@ gulp.task('appscripts',function(){
 //all js
 gulp.task('scripts',[],function(){
 	return gulp.src(['app/**/*.js', 'scripts/js/*.js'])
+    .pipe(plumber())
 	.pipe(sourcemaps.init({ loadMaps: true }))
 	.pipe(concat('scripts.js'))
 	.pipe(uglify())
@@ -96,7 +99,7 @@ gulp.task('jquery',function(){
 });
 
 // coping angular js
-gulp.task('angular',['angular-route','angular-resource','pagination'],function(){
+gulp.task('angular',['angular-route','angular-resource'],function(){
 	return gulp.src('bower_components/angular/angular.js')
 	.pipe(sourcemaps.init())
 	.pipe(rename({suffix:".min"}))

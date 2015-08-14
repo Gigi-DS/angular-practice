@@ -15,3 +15,11 @@ body {
 .thumbs{
 	width: 150px;
 }
+.jumbotron{
+    margin: 5px;
+    padding: 5px;
+}
+label {
+
+    font-size: 12px;
+}
