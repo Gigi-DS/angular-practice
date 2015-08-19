@@ -8,49 +8,66 @@
             </form>
 <!--            filter module-->
             <br />
+            <div>
+                <label>Page Size: </label>
+                <br />
+                <input type="number" id="pageSize" name="pageSize" ng-model="pageSize" ng-blur="refresh()"  />
+            </div>
+            <div>
+                <label>Display pages to left/right: </label>
+                <br />
+                <input type="number" id="pageLeftRight" name="maxPageRightLeft" ng-model="maxPageRightLeft" ng-blur="refresh()"  />
+            </div>
             <br />
             <a href="#/addcustomer"><button class="btn btn-success btn-xs">Add Customer</button></a>
+             <a class="btn btn-info btn-xs" ng-click="reloadPage()">Refresh</a>
         </div>
     </div>
     <table class="table table-striped table-hover">
         <tr>
             <td data-ng-click="sort('id')">
                 ID
-                <span class="glyphicon sort-icon" data-ng-show="sortKey=='id'" data-ng-class="{'glyphicon-chevron-up':SortReverse, 'glyphicon-chevron-down':!SortReverse}"></span>
+                <span class="glyphicon sort-icon" data-ng-show="sortKey=='id'" data-ng-class="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
             </td>
             <td data-ng-click="sort('name')">
                 First Name
-                <span class="glyphicon sort-icon" data-ng-show="sortKey=='name'" data-ng-class="{'glyphicon-chevron-up':SortReverse, 'glyphicon-chevron-down':!SortReverse}"></span>
+                <span class="glyphicon sort-icon" data-ng-show="sortKey=='name'" data-ng-class="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
             </td>
             <td data-ng-click="sort('lastname')">
                 Last Name
-                <span class="glyphicon sort-icon" data-ng-show="sortKey=='lastname'" data-ng-class="{'glyphicon-chevron-up':SortReverse, 'glyphicon-chevron-down':!SortReverse}"></span>
+                <span class="glyphicon sort-icon" data-ng-show="sortKey=='lastname'" data-ng-class="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
             </td>
             <td data-ng-click="sort('hobby')">
                 Hobby
-                <span class="glyphicon sort-icon" data-ng-show="sortKey=='hobby'" data-ng-class="{'glyphicon-chevron-up':SortReverse, 'glyphicon-chevron-down':!SortReverse}"></span>
+                <span class="glyphicon sort-icon" data-ng-show="sortKey=='hobby'" data-ng-class="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
             </td>
             <td data-ng-click="sort('age')">
                 Age
-                <span class="glyphicon sort-icon" data-ng-show="sortKey=='age'" data-ng-class="{'glyphicon-chevron-up':SortReverse, 'glyphicon-chevron-down':!SortReverse}"></span>
+                <span class="glyphicon sort-icon" data-ng-show="sortKey=='age'" data-ng-class="{'glyphicon-chevron-up':reverse, 'glyphicon-chevron-down':!reverse}"></span>
             </td>
-            <td>Edit</td>
-            <td>Remove</td>
         </tr>
-        <tr ng-repeat="person in persons track by $index|orderBy:sortKey:SortReverse">
-            <td>{{person.id}}</td>
+        <tr ng-repeat="person in persons track by $index|orderBy:sortKey:reverse" id="{{person.id}}" data="{{person.id}}" ng-click="redirect('#/editcustomer/',person.id);" class="cursor:pointer">
+            <a href="#"><td>{{person.id}}</td>
             <td>{{person.name}}</td>
             <td>{{person.lastname}}</td>
             <td>{{person.hobby}}</td>
-            <td>{{person.age}}</td>
-            <td id="{{person.id}}" data="{{person.id}}"><a href="#/editcustomer/{{person.id}}">edit</a></td>
-            <td id="{{person.id}}" data="{{person.id}}" ng-click="removeData(person.id)">remove</td>
+            <td>{{person.age}}</td></a>
         </tr>
     </table>
         
 <!--    pagination-->
       <ul class="pagination">
-        <li ng-repeat="page in totalPages"  id="{{page}}" data="{{page}}" ng-click="setPage(page)"><a>{{page}}</a></li>
+          <li ng-click="setPage(1)">
+              <a aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+          </li>
+        <li ng-repeat="page in totalPagesArr"  id="{{page}}" ng-class="{active:pageIndex==page}" data="{{page}}" ng-click="setPage(page)"><a>{{page}}</a></li>
+           <li ng-click="setPage(totalPages)">
+              <a aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
        
       </ul>
 

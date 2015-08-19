@@ -31,9 +31,12 @@
       </div>
         <div class="form-group">
         <label for="age">Age: </label>
-        <input type="number" class="form-control" id="age" placeholder="age" ng-model="cust.age" required>
+        <input type="date" class="form-control" id="age" placeholder="age" ng-model="cust.age" required>
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button type="submit" class="btn btn-success btn-xs">Submit</button>
+        <a class="btn btn-info btn-xs" ng-click="redirect()">Cancel</a>
     </form>
+        <br />
+        
     </div>
 </div>

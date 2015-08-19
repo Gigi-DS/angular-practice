@@ -1,6 +1,9 @@
 
 <div class="col-md-6 col-md-offset-3 ">
     <div class="jumbotron">
+        <div>
+           <h3>Customer Id: {{customer.id}}</h3>
+        </div>
     <form name="updatecustomer" novalidate ng-submit="updateCustomer(customer)">
       <div class="form-group">
         <label for="name">Name:</label>
@@ -30,10 +33,13 @@
         <input type="text" class="form-control" id="hobby" placeholder="hobby" ng-model="customer.hobby" required>
       </div>
         <div class="form-group">
-        <label for="age">Age: </label>
+        <label for="age">Birthday: (ex.year/month/day)</label>
         <input type="text" class="form-control" id="age" placeholder="age" ng-model="customer.age" required>
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+        
+      <button type="submit" class="btn btn-success btn-xs">Submit</button>
     </form>
+        <button class="btn btn-danger btn-xs"  ng-click="removeData(customer.id)">Remove</button>
+      <button class="btn btn-warning btn-xs"  ng-click="redirect('#/persons/','')">Cancel</button>
     </div>
 </div>

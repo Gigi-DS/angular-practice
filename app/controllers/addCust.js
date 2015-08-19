@@ -11,5 +11,7 @@ blogApp.controller("addCustCtrl",['$scope','$log','LS','$window','customerData',
      
     }
     
-    
+    $scope.redirect=function(){
+         $window.location ="#/persons";
+    }
 }]);

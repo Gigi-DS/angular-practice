@@ -38,9 +38,11 @@ articleServices.factory('articles', ['$resource',
     
  }]);
 
- articleServices.factory("customerData",["$http",'LS','$q','$filter',function($http,LS,$q,$filter){
+ articleServices.factory("customerData",["$http",'LS','$q','$filter','$log',function($http,LS,$q,$filter,$log){
      var baseUrl = 'jsondata/articles1.json';
      var dataLoad = null; 
+     
+    // throw('test');
      init();
      return{ 
 //         ,sort,direction,pageIndex,pageSize            ,pageIndex,pageSize,sortKey, sortDirection
@@ -54,24 +56,21 @@ articleServices.factory('articles', ['$resource',
                 
                 //if isset searc && search module
                 if(search){
-                  //getting data from json by name, lastName and Hobby
-                    function searchData(){
-                        var seachName = $filter('filter')(data, {name: search});
-                        var searchLastName = $filter('filter')(data, {lastname: search});
-                        var searchHobby = $filter('filter')(data, {hobby: search});
-                        var searchId = $filter('filter')(data, {id: search});
-                        
-                        //concat all results 
-                        var resultData = seachName
-                            .concat(searchLastName)
-                            .concat(searchHobby)
-                            .concat(searchId);
-                        
-                        //excluding duplicated data
-                        var filteredResults = resultData.filter(function (item,pos){return resultData.indexOf(item) == pos});
-                        return filteredResults;
+                  function searchArr(search){
+                        var results = [];
+                        for(var i=0;i<data.length;i++){
+                            if(data[i].id==search || 
+                               data[i].name.toLowerCase()==search.toLowerCase() || 
+                               data[i].lastname.toLowerCase()==search.toLowerCase() || 
+                               data[i].hobby.toLowerCase()==search.toLowerCase())
+                                results.push(data[i]);
+                        }
+                      return results;
                     }
-                    data = searchData();
+                    data = searchArr(search);
+                        
+//                    var seachName = $filter('filter')(data,{{name: search} || {lastname: search}},false);
+//                   data=seachName;
                 }
                 var cout = data.length;
 //                if isset sort && sortDirection && sort module
@@ -89,13 +88,14 @@ articleServices.factory('articles', ['$resource',
                 //begin with 
                 beginWith = ((pageIndex-1) * pageSize);
                 data = $filter("limitTo")(data,pageSize,beginWith);
-                
               return {
                  items: data,
                 count: cout
               };
                 
             }
+            //ERROR
+                          
                                 );
         },
          getCount: function(){
@@ -104,59 +104,52 @@ articleServices.factory('articles', ['$resource',
             })
          },
          removeItem: function(removeId){
+                //paramater validation
              return dataLoad.then(function(data){
-                 console.log("data-load value "+dataLoad.$$state.value);
-                 if(removeId){
-                     customerArr=[];
-                     angular.forEach(data,function(value, key){ 
-                        if(value.id!==removeId) customerArr.push(value);
-                     });
-                     data=customerArr;
-                    console.log("after removing \n"+data);
+                                 
+                     f = data.findIndex(function(item) { return item.id == removeId; });
                      
-                     LS.clearData("cutomers");
-                     test1=LS.getData("cutomers");
-                     console.log("data after LS delete Item \n"+test1);
-                     LS.setData(customerArr,"cutomers")
-                     dataLoad.$$state.value=customerArr;
+                     if(f < 0)
+                         return false;
+                     data.splice(f,1);
                      
-                     test=LS.getData("cutomers");
-                     console.log("data from LS after remove \n"+test);
-                 }
-               return data;
-             
-             })
-            
+                     LS.setData(data,"cutomers");
+                     //dataLoad = $q.resolve(data);
+                     
+                     return true;
+             });
          },
          
          
          
          addCustomer: function(newCustomer){
             return dataLoad.then(function(data){
+                data.lastId = 0;
                 id=0;
                 angular.forEach(data,function(value,key){
                     if(value.id >id) id=value.id;
+                
                 });
                 id=id+1;
                 newCustomer.id=id;
                 data.push(newCustomer);
-                LS.clearData("cutomers");
+               // LS.clearData("cutomers");
                 LS.setData(data,"cutomers");
-                dataLoad.$$state.value=data;
-                return cust={id: 0,name: "",lastname: "",hobby: "",age: ""};
-            })
+                //dataLoad.$$state.value=data;
+                return angular.copy(newCustomer);// should return new customer - > id outside
+            });
          },
          
          getCustomer: function(customerId){
             return dataLoad.then(function(data){
-                customer=[];
-                
-                angular.forEach(data,function(value, key){
-                    if(value.id==customerId){
-                        customer=value;
+                customer= null;
+                for (var i = 0, len = data.length; i < len; i++) {
+                    if(data[i].id==customerId){
+                        customer=data[i];
+                        break;
                     } 
-                })
-                return customer;
+                }
+                return angular.copy(customer);
             })
          },
          
@@ -168,10 +161,10 @@ articleServices.factory('articles', ['$resource',
                 })
                 arr.push(customer);
                 data=arr;
-                LS.clearData("cutomers");
+//                LS.clearData("cutomers");
                 LS.setData(data,"cutomers");
-                dataLoad.$$state.value=data;
-                return true;
+                dataLoad= $q.resolve(data);
+                return data;
             })
          }
          
@@ -186,12 +179,20 @@ articleServices.factory('articles', ['$resource',
          else
              dataLoad = $http.get(baseUrl).then(function(response){
                 LS.setData(response.data,"cutomers");
+                 
                 return response.data;
-            });
+            }).catch(function(e) { throw { status: e.staus, message: e.statusText }});
+            dataLoad.catch(onError);
          
          return dataLoad;
          
          
          
      }
+     
+     function onError(error){
+         
+        $log.error({ status: error.status, message: error.message, source: 'customerData'});
+     }
+     
  }]);
