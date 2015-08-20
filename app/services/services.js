@@ -150,7 +150,7 @@ articleServices.factory('articles', ['$resource',
                     } 
                 }
                 return angular.copy(customer);
-            })
+            }).catch(onError);
          },
          
          updateCustomer: function(customer){
@@ -165,7 +165,7 @@ articleServices.factory('articles', ['$resource',
                 LS.setData(data,"cutomers");
                 dataLoad= $q.resolve(data);
                 return data;
-            })
+            }).catch(onError);
          }
          
         

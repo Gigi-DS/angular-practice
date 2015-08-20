@@ -1,10 +1,10 @@
 //practice with functiuonal programming
 function test1() {
     var i = 4;
-    alert("first: "+i);
+   // alert("first: "+i);
     f = function () {
         i = i + 1;
-        alert("second: "+i);
+       // alert("second: "+i);
         return i;
     }
     return {
