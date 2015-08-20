@@ -113,6 +113,7 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
         });
     }
       function convertModelToVM(model){
+          var arr={};
           var birthday = new Date(model.age);
          var today = new Date($filter('date')(new Date,'yyyy/MM/dd'));
           $log.log
@@ -123,10 +124,11 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
           var days = hours*24;
           var years = days*365;
           
-          model.age = Math.round(age/years);
+          arr.age = Math.round(age/years);
+         
           
           
-        return model;
+        return angular.merge({},model,arr);
       }
     
     //sort
