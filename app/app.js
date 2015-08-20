@@ -4,7 +4,7 @@
 var blogApp = angular.module('someBlogApp',[
 	'ngRoute',
 	'someBlogServices',
-	'angularUtils.directives.dirPagination'
+     'ngAnimate',
 ]);
 
 blogApp.controller('testCtrl',['$scope','$http', function($scope,$http){

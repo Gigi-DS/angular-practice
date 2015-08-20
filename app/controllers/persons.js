@@ -1,59 +1,73 @@
-//practice with functiuonal programming
-function test1() {
-    var i = 4;
-   // alert("first: "+i);
-    f = function () {
-        i = i + 1;
-       // alert("second: "+i);
-        return i;
-    }
-    return {
-        exec: f
-    };
-}
-
-
-var fac = test1;
-
-f1 = fac();
-f2 = fac();
-f3 = fac();
-
-
-console.log('f1.1:' + f1.exec());
-console.log('f2.1:' + f2.exec());
-console.log('f3.3:' + f3.exec());
-console.log('f1.2:' + f1.exec());
-console.log('f1.3:' + f1.exec());
-console.log('f3.2:' + f3.exec());
-console.log('f2.2:' + f2.exec());
-
-
-var say = function(name, message){
-    console.log(name+" say "+message);
-}
-
-say("Gigi", "morning");
-
-say("Gigi","morning","third param no to display");
-
-say("gigi");
-
-
-sayV2=function(name, message){
-    console.log(name+" say "+(message || "nothing at all"));
-}
-
-sayV2("gigi");
-
-//always return something
-sayfunctional=function(name, message){
-    return name+" say "+(message || 'nothing at all yo');
-}
-
-console.log(sayfunctional("Gigi"));
-
-//finish practice with functional programming
+////testing merge
+//var gigi = {"id":1,"name":"Gigi", "lastname":"DS", "hobby":"football", "age":"1987/06/04"};
+//var gigel = {"id":1,"name":"Gigel", "lastname":"DS-MD", "hobby":"football", "age":"1987/06/04"};
+//
+////var gigle = {
+////    id:1,
+////    fname:"gigel",
+////    lname:"DS-Moldova",
+////    hobby:"football",
+////    age:"1987/06/04
+////};
+//
+//console.log(angular.merge({},gigi,gigel));
+//
+////practice with functiuonal programming
+//function test1() {
+//    var i = 4;
+//   // alert("first: "+i);
+//    f = function () {
+//        i = i + 1;
+//       // alert("second: "+i);
+//        return i;
+//    }
+//    return {
+//        exec: f
+//    };
+//}
+//
+//
+//var fac = test1;
+//
+//f1 = fac();
+//f2 = fac();
+//f3 = fac();
+//
+//
+//console.log('f1.1:' + f1.exec());
+//console.log('f2.1:' + f2.exec());
+//console.log('f3.3:' + f3.exec());
+//console.log('f1.2:' + f1.exec());
+//console.log('f1.3:' + f1.exec());
+//console.log('f3.2:' + f3.exec());
+//console.log('f2.2:' + f2.exec());
+//
+//
+//var say = function(name, message){
+//    console.log(name+" say "+message);
+//}
+//
+//say("Gigi", "morning");
+//
+//say("Gigi","morning","third param no to display");
+//
+//say("gigi");
+//
+//
+//sayV2=function(name, message){
+//    console.log(name+" say "+(message || "nothing at all"));
+//}
+//
+//sayV2("gigi");
+//
+////always return something
+//sayfunctional=function(name, message){
+//    return name+" say "+(message || 'nothing at all yo');
+//}
+//
+//console.log(sayfunctional("Gigi"));
+//
+////finish practice with functional programming
 
 blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerData','$log','$location','$filter',function($scope,$routeParams,$window,customerData,$log,$location,$filter){
    

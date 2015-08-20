@@ -99,7 +99,7 @@ gulp.task('jquery',function(){
 });
 
 // coping angular js
-gulp.task('angular',['angular-route','angular-resource'],function(){
+gulp.task('angular',['angular-route','angular-resource','angular-animate'],function(){
 	return gulp.src('bower_components/angular/angular.js')
 	.pipe(sourcemaps.init())
 	.pipe(rename({suffix:".min"}))
@@ -122,6 +122,16 @@ gulp.task('angular-route',function(){
 // coping angular resource
 gulp.task('angular-resource',function(){
 	return gulp.src('bower_components/angular-resource/angular-resource.js')
+	.pipe(sourcemaps.init())
+	.pipe(rename({suffix:".min"}))
+	.pipe(uglify())
+	.pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest('scripts/plugins'));
+});
+
+// coping angular animate
+gulp.task('angular-animate',function(){
+	return gulp.src('bower_components/angular-animate/angular-animate.js')
 	.pipe(sourcemaps.init())
 	.pipe(rename({suffix:".min"}))
 	.pipe(uglify())

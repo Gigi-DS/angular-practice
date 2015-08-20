@@ -1,2 +1,2 @@
-body{margin:0;padding:0;font-family:verdana}.artImg{max-width:200px;overflow:hidden;margin-bottom:10px}.art{padding:15px}.thumbs{width:150px}.jumbotron{margin:5px;padding:5px}label{font-size:12px}
+body{margin:0;padding:0;font-family:verdana}.artImg{max-width:200px;overflow:hidden;margin-bottom:10px}.art{padding:15px}.thumbs{width:150px}.jumbotron{margin:5px;padding:5px}label{font-size:12px}.fade-in-out{transition:1s linear all;opacity:1}.fade-in-out.ng-hide{opacity:0}
 /*# sourceMappingURL=style.min.css.map */

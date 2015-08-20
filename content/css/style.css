@@ -23,3 +23,11 @@ label {
 
     font-size: 12px;
 }
+.fade-in-out {
+  transition: 1s linear all;  
+  opacity: 1;
+}
+
+.fade-in-out.ng-hide {
+  opacity: 0;
+}
