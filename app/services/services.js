@@ -136,8 +136,14 @@ articleServices.factory('articles', ['$resource',
                // LS.clearData("cutomers");
                 LS.setData(data,"cutomers");
                 //dataLoad.$$state.value=data;
-                return angular.copy(newCustomer);// should return new customer - > id outside
+                return angular.copy(newCustomer);   // should return new customer - > id outside
             });
+         },
+         
+         getAll: function(){
+            return dataLoad.then(function(data){
+                return angular.copy(data);
+            })
          },
          
          getCustomer: function(customerId){
@@ -166,6 +172,17 @@ articleServices.factory('articles', ['$resource',
                 dataLoad= $q.resolve(data);
                 return data;
             }).catch(onError);
+         },
+         
+         quickUpdate: function(updtCustomer){
+            return dataLoad.then(function(data){
+                var promise = $q.defer();
+                $http.patch(baseUrl,updtCustomer).success(function(data){
+                    data = data.merge({},data,updtCustomer);
+                    LS.setData(data, "customers");
+                    return data;
+                }); 
+            });
          }
          
         

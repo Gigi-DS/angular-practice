@@ -35,6 +35,10 @@ blogApp.config(['$routeProvider',function($routeProvider){
         templateUrl: 'app/views/editcustomer.html',
         controller: "editCustCtrl"
    })
+    .when('/partialupdate',{
+        templateUrl: 'app/views/partialupdate.html',
+        controller: 'partialUpdtCtrl'
+    })
 	.otherwise({
 		redirectTo:'app/'
 	});

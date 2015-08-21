@@ -23,8 +23,14 @@ label {
 
     font-size: 12px;
 }
+
+.number{
+    width: 50px !important;
+}
+
+/*angular animation fade-in/out*/
 .fade-in-out {
-  transition: 1s linear all;  
+  transition: 0.5s linear all;  
   opacity: 1;
 }
 

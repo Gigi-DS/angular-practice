@@ -1,0 +1,46 @@
+
+
+<div class="col-md-6 col-md-offset-3 ">
+    <div class="jumbotron">
+        <div>
+           <h3>Customer Id: {{customer.id}}</h3>
+        </div>
+    <form name="updatecustomer" novalidate ng-submit="updateCustomer(customer)">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="name" ng-model="customer.name" required ng-minlength="2" ng-value="customer.name">
+<!--          error message-->
+          <div class="alert alert-danger" role="alert" ng-show="updatecustomer.name.$touched && updatecustomer.name.$error.minlength" ng-messages="updatecustomer.name.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="updatecustomer.name.$error.required" ng-message="updatecustomer.name.$error.required">This fiel is required</li>
+                <li ng-show="updatecustomer.name.$error.minlength" ng-message="updatecustomer.name.$error.minlength">Must enter min. 2 chars</li>
+              </ul>
+            </div>
+      </div>
+        <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input type="text" class="form-control" id="lastname" placeholder="lastname" ng-model="customer.lastname" required>
+            <div class="alert alert-danger" role="alert" ng-show="updatecustomer.lastname.$touched && updatecustomer.lastname.$error.minlength" ng-messages="updatecustomer.lastname.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="updatecustomer.lastname.$error.required" ng-message="updatecustomer.lastname.$error.required">This fiel is required</li>
+                <li ng-show="updatecustomer.lastname.$error.minlength" ng-message="updatecustomer.lastname.$error.minlength">Must enter min. 2 chars</li>
+              </ul>
+            </div>
+      </div>
+        <div class="form-group">
+        <label for="hobby">Hobby: </label>
+        <input type="text" class="form-control" id="hobby" placeholder="hobby" ng-model="customer.hobby" required>
+      </div>
+        <div class="form-group">
+        <label for="age">Birthday: (ex.year/month/day)</label>
+        <input type="text" class="form-control" id="age" placeholder="age" ng-model="customer.age" required>
+      </div>
+        
+      <button type="submit" class="btn btn-success btn-xs">Submit</button>
+    </form>
+        <button class="btn btn-danger btn-xs"  ng-click="removeData(customer.id)">Remove</button>
+      <button class="btn btn-warning btn-xs"  ng-click="redirect('#/persons/','')">Cancel</button>
+    </div>
+</div>

@@ -69,7 +69,7 @@
 //
 ////finish practice with functional programming
 
-blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerData','$log','$location','$filter',function($scope,$routeParams,$window,customerData,$log,$location,$filter){
+blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerData','$log','$location','$filter','$http',function($scope,$routeParams,$window,customerData,$log,$location,$filter,$http){
    
     //setting empty array for records
 	$scope.persons=[];
@@ -82,6 +82,7 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
     $scope.totalPages = 0;
     $scope.removeId=false;
     $scope.refresh=refresh;
+    $scope.quickEdit=false;
     
   init();
     
@@ -115,6 +116,8 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
       function convertModelToVM(model){
           var arr={};
           var birthday = new Date(model.age);
+          arr.birthday = angular.copy(model.age);
+          
          var today = new Date($filter('date')(new Date,'yyyy/MM/dd'));
           $log.log
           var age = today - birthday;
@@ -124,8 +127,7 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
           var days = hours*24;
           var years = days*365;
           
-          arr.age = Math.round(age/years);
-         
+          arr.birthday = Math.round(age/years);
           
           
         return angular.merge({},model,arr);
@@ -148,9 +150,34 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
         refresh();
     }
    
+    //show customer
+    $scope.showCustomer=function(id){
+        $scope.quickEdit = true;
+        var customer = {};
+        for(var i=0; i<$scope.persons.length;i++){
+            if($scope.persons[i].id==id){
+                customer=angular.copy($scope.persons[i]);
+                break;
+            }
+        }
+        return $scope.customer=customer;
+    }
+    
+    $scope.quickSave=function(c){
+        console.log(c);
+        customerData.quickUpdate(c);
+        $scope.close;
+    }
+    
+     $scope.close = function(){
+       $scope.customer={};
+        $scope.quickEdit = false;
+   }
+    
    $scope.redirect=function(toUrl,personId){
        $window.location =toUrl+personId;
    }
+   
    
    //x page left and rigth to the current page
   function xPagesLeftRight(Arr){
@@ -185,4 +212,6 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
          return xPagesLeftRight(arr);
     }
     $log.error();
+    
+
 }]); 
