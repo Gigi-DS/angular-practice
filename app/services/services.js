@@ -49,7 +49,6 @@ articleServices.factory('articles', ['$resource',
         getData: function(search,sortKey, sortReverse, pageIndex, pageSize)
         {
             return dataLoad.then(function(data) {
-                
                 //console.log("from getData: \n"+data);
                 //total number of pagination
                 pages = Math.ceil(data.length / pageSize);
@@ -174,14 +173,23 @@ articleServices.factory('articles', ['$resource',
             }).catch(onError);
          },
          
-         quickUpdate: function(updtCustomer){
+         quickUpdate: function(c){
             return dataLoad.then(function(data){
-                var promise = $q.defer();
-                $http.patch(baseUrl,updtCustomer).then(function(data){
-                    data = data.merge({},data,updtCustomer);
-                    LS.setData(data, "customers");
-                    return data;
-                }); 
+                delete c.birthday;
+                 for(var i=0;i<data.length;i++){
+                    if(data[i].id==c.id){
+                       data[i] = angular.merge({},data[i],c);
+                        break;
+                    }
+                }
+                LS.setData(data,"cutomers");
+                return data;
+//                var promise = $q.defer();
+//                $http.patch(baseUrl,updtCustomer).then(function(data){
+//                    data = data.merge({},data,updtCustomer);
+//                    LS.setData(data, "customers");
+//                    return data;
+//                }); 
             });
          }
          
@@ -208,6 +216,7 @@ articleServices.factory('articles', ['$resource',
      }
      
      function onError(error){
+         $log.error();
          
         $log.error({ status: error.status, message: error.message, source: 'customerData'});
      }

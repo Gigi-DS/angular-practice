@@ -163,17 +163,17 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
         return $scope.customer=customer;
     }
     
-    $scope.quickSave=function(c){
-        console.log(c);
-        customerData.quickUpdate(c);
-        $scope.close;
-        refresh();
-    }
-    
-     $scope.close = function(){
+    $scope.close = function(){
        $scope.customer={};
         $scope.quickEdit = false;
    }
+    
+    $scope.quickSave=function(c){
+        customerData.quickUpdate(c);
+        $scope.quickEdit = false;
+        $scope.customer={};
+        refresh();
+    }
     
    $scope.redirect=function(toUrl,personId){
        $window.location =toUrl+personId;
