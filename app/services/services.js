@@ -177,7 +177,7 @@ articleServices.factory('articles', ['$resource',
          quickUpdate: function(updtCustomer){
             return dataLoad.then(function(data){
                 var promise = $q.defer();
-                $http.patch(baseUrl,updtCustomer).success(function(data){
+                $http.patch(baseUrl,updtCustomer).then(function(data){
                     data = data.merge({},data,updtCustomer);
                     LS.setData(data, "customers");
                     return data;

@@ -167,6 +167,7 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
         console.log(c);
         customerData.quickUpdate(c);
         $scope.close;
+        refresh();
     }
     
      $scope.close = function(){
