@@ -175,7 +175,7 @@ articleServices.factory('articles', ['$resource',
                     data=arr;
                     LS.setData(data,"cutomers");
                     dataLoad= $q.resolve(data);
-                    return arr;
+                    return angular.copy(arr);
                 }
             }).catch(onError);
          },
@@ -196,7 +196,7 @@ articleServices.factory('articles', ['$resource',
                     return valid;
                 }else{
                     cNew=dataLoop(data,c,true);
-                    return cNew;
+                    return angular.copy(cNew);
                 }
             });
          }
