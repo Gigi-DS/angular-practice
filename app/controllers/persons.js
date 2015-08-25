@@ -68,9 +68,9 @@
 //console.log(sayfunctional("Gigi"));
 //
 ////finish practice with functional programming
-
+//  var Validate = require('validate-arguments');
+//  console.log(Validate);
 blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerData','$log','$location','$filter','$http',function($scope,$routeParams,$window,customerData,$log,$location,$filter,$http){
-   
     //setting empty array for records
 	$scope.persons=[];
     $scope.search = "";
@@ -83,7 +83,6 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
     $scope.removeId=false;
     $scope.refresh=refresh;
     $scope.quickEdit=false;
-    
   init();
     
     
@@ -119,7 +118,6 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
           arr.birthday = angular.copy(model.age);
           
          var today = new Date($filter('date')(new Date,'yyyy/MM/dd'));
-          $log.log
           var age = today - birthday;
           
           var minutes = 1000*60;
@@ -169,10 +167,16 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
    }
     
     $scope.quickSave=function(c){
-        customerData.quickUpdate(c);
-        $scope.quickEdit = false;
-        $scope.customer={};
-        refresh();
+        customerData.customerPatch(c).then(function(data){
+            if(data.valid===false){
+                alert("Error on partial udpdate, please check data type!");
+            }else{
+                $scope.quickEdit = false;
+                $scope.customer={};
+                refresh();
+            }
+            
+        });
     }
     
    $scope.redirect=function(toUrl,personId){

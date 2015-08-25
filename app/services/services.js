@@ -41,6 +41,18 @@ articleServices.factory('articles', ['$resource',
  articleServices.factory("customerData",["$http",'LS','$q','$filter','$log',function($http,LS,$q,$filter,$log){
      var baseUrl = 'jsondata/articles1.json';
      var dataLoad = null; 
+//     LS.clearData("cutomers");
+     //schma for validation
+     schema = {
+                "type":"object",
+                "properties":{
+                    "id":{"type":"number"},
+                    "name":{"type":"string"},
+                    "lastname":{"type":"string"},
+                    "hobby":{"type":"string"},
+                    "age":{"type":"string"}
+                }
+            };
      
     // throw('test');
      init();
@@ -113,7 +125,6 @@ articleServices.factory('articles', ['$resource',
                      data.splice(f,1);
                      
                      LS.setData(data,"cutomers");
-                     //dataLoad = $q.resolve(data);
                      
                      return true;
              });
@@ -123,19 +134,23 @@ articleServices.factory('articles', ['$resource',
          
          addCustomer: function(newCustomer){
             return dataLoad.then(function(data){
-                data.lastId = 0;
-                id=0;
-                angular.forEach(data,function(value,key){
-                    if(value.id >id) id=value.id;
-                
-                });
-                id=id+1;
-                newCustomer.id=id;
-                data.push(newCustomer);
-               // LS.clearData("cutomers");
-                LS.setData(data,"cutomers");
-                //dataLoad.$$state.value=data;
-                return angular.copy(newCustomer);   // should return new customer - > id outside
+//                 //validation
+                var valid = tv4.validateMultiple(newCustomer, schema);
+                if(!valid.valid){
+                    return valid;
+                }else{
+                    data.lastId = 0;
+                    id=0;
+                    angular.forEach(data,function(value,key){
+                        if(value.id >id) id=value.id;
+
+                    });
+                    id=id+1;
+                    newCustomer.id=id;
+                    data.push(newCustomer);
+                    LS.setData(data,"cutomers");
+                    return angular.copy(newCustomer);   // should return new customer - > id outside
+                }
             });
          },
          
@@ -145,56 +160,62 @@ articleServices.factory('articles', ['$resource',
             })
          },
          
-         getCustomer: function(customerId){
+         updateCustomer: function(customer){
             return dataLoad.then(function(data){
-                customer= null;
-                for (var i = 0, len = data.length; i < len; i++) {
-                    if(data[i].id==customerId){
-                        customer=data[i];
-                        break;
-                    } 
+                //validation
+                var valid = tv4.validateMultiple(customer, schema);
+                if(!valid.valid){
+                    return valid;
+                }else{
+                    arr = [];
+                    angular.forEach(data,function(value, key){
+                        if(value.id!=customer.id) arr.push(value);
+                    })
+                    arr.push(customer);
+                    data=arr;
+                    LS.setData(data,"cutomers");
+                    dataLoad= $q.resolve(data);
+                    return arr;
                 }
+            }).catch(onError);
+         },
+         
+          getCustomer: function(customerId){
+            return dataLoad.then(function(data){
+                customer={"id":customerId};
+                customer=dataLoop(data,customer);
                 return angular.copy(customer);
             }).catch(onError);
          },
          
-         updateCustomer: function(customer){
+         customerPatch: function(c){
             return dataLoad.then(function(data){
-                arr = [];
-                angular.forEach(data,function(value, key){
-                    if(value.id!=customer.id) arr.push(value);
-                })
-                arr.push(customer);
-                data=arr;
-//                LS.clearData("cutomers");
-                LS.setData(data,"cutomers");
-                dataLoad= $q.resolve(data);
-                return data;
-            }).catch(onError);
-         },
-         
-         quickUpdate: function(c){
-            return dataLoad.then(function(data){
-                delete c.birthday;
-                 for(var i=0;i<data.length;i++){
-                    if(data[i].id==c.id){
-                       data[i] = angular.merge({},data[i],c);
-                        break;
-                    }
+                //validation
+                var valid = tv4.validateMultiple(c, schema);
+                if(!valid.valid){
+                    return valid;
+                }else{
+                    cNew=dataLoop(data,c,true);
+                    return cNew;
                 }
-                LS.setData(data,"cutomers");
-                return data;
-//                var promise = $q.defer();
-//                $http.patch(baseUrl,updtCustomer).then(function(data){
-//                    data = data.merge({},data,updtCustomer);
-//                    LS.setData(data, "customers");
-//                    return data;
-//                }); 
             });
          }
          
         
 }
+     function dataLoop(data,c,patch){
+        for(var i=0;i<data.length;i++){
+            if(data[i].id==c.id)
+                break;
+        }
+         if(patch){
+            data[i] = angular.merge({},data[i],c);
+            LS.setData(data,"cutomers");
+         }
+        
+         return data[i];
+     }
+     
      function init(){
          customers = LS.getData("cutomers");
          if(customers){

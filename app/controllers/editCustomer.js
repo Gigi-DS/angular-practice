@@ -10,7 +10,6 @@ blogApp.controller("editCustCtrl",['$scope','$window','$routeParams','$log','$lo
             
             //data.age= 56;
             $scope.customer=data;
-            $log.log(data);
             
         });
         
@@ -18,8 +17,12 @@ blogApp.controller("editCustCtrl",['$scope','$window','$routeParams','$log','$lo
     
     $scope.updateCustomer=function(customer){
         customerData.updateCustomer(customer).then(function(data){
-                $window.alert("Customer Succesefully Updated");
-                $location.path("/persons");
+                if(data.valid===false){
+                    $window.alert("Error on updating cunstomer, please check type of variables");
+                }else{
+                    $window.alert("Customer Succesefully Updated");
+                    $location.path("/persons");
+                }
         });
     }
     

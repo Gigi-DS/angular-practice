@@ -5,8 +5,12 @@ blogApp.controller("addCustCtrl",['$scope','$log','LS','$window','customerData',
     
     $scope.addCust=function(newCust){
      customerData.addCustomer(newCust).then(function(data){
-       $scope.cust=data;
-        $window.alert("Customer Successeful added!");
+         if(data.valid===false){
+            alert("Adding new customer error, please check data type");
+         }else{
+            $scope.cust=data;
+            $window.alert("Customer Successeful added!");
+         }
      });
      
     }

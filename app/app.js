@@ -1,10 +1,12 @@
 /**
  * @author Admin
  */
+
+
 var blogApp = angular.module('someBlogApp',[
 	'ngRoute',
 	'someBlogServices',
-     'ngAnimate',
+     'ngAnimate'
 ]);
 
 blogApp.controller('testCtrl',['$scope','$http', function($scope,$http){
