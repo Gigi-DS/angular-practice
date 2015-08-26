@@ -35,13 +35,12 @@ articleServices.factory('articles', ['$resource',
             return Math.floor((Math.random()*6000)+1);
         }
     }
-    
  }]);
 
  articleServices.factory("customerData",["$http",'LS','$q','$filter','$log',function($http,LS,$q,$filter,$log){
      var baseUrl = 'jsondata/articles1.json';
      var dataLoad = null; 
-//     LS.clearData("cutomers");
+//    LS.clearData("cutomers");
      //schma for validation
      schema = {
                 "type":"object",
@@ -117,13 +116,17 @@ articleServices.factory('articles', ['$resource',
          removeItem: function(removeId){
                 //paramater validation
              return dataLoad.then(function(data){
-                                 
-                     f = data.findIndex(function(item) { return item.id == removeId; });
-                     
-                     if(f < 0)
-                         return false;
-                     data.splice(f,1);
-                     
+
+                 var f;
+                 var found = data.some(function(item, index) { f = index; return item.id == removeId; });
+
+                 if (!found) {
+                     return false;
+                 }
+
+                 data.splice(f, 1);
+                 console.log(data);
+                 
                      LS.setData(data,"cutomers");
                      
                      return true;
@@ -133,25 +136,24 @@ articleServices.factory('articles', ['$resource',
          
          
          addCustomer: function(newCustomer){
-            return dataLoad.then(function(data){
-//                 //validation
-                var valid = tv4.validateMultiple(newCustomer, schema);
+             var valid = tv4.validateMultiple(newCustomer, schema);
                 if(!valid.valid){
                     return valid;
                 }else{
-                    data.lastId = 0;
-                    id=0;
-                    angular.forEach(data,function(value,key){
-                        if(value.id >id) id=value.id;
+                    return dataLoad.then(function(data){
+                     //validation
+                        data.lastId = 0;
+                        id=0;
+                        angular.forEach(data,function(value,key){
+                            if(value.id >id) id=value.id;
 
-                    });
-                    id=id+1;
-                    newCustomer.id=id;
-                    data.push(newCustomer);
-                    LS.setData(data,"cutomers");
-                    return angular.copy(newCustomer);   // should return new customer - > id outside
-                }
-            });
+                        });
+                        id=id+1;
+                        newCustomer.id=id;
+                        data.push(newCustomer);
+                        LS.setData(data,"cutomers");
+                        return angular.copy(newCustomer);   // should return new customer - > id outside
+            })};
          },
          
          getAll: function(){
@@ -177,42 +179,39 @@ articleServices.factory('articles', ['$resource',
                     dataLoad= $q.resolve(data);
                     return angular.copy(arr);
                 }
-            }).catch(onError);
+            })
          },
          
           getCustomer: function(customerId){
             return dataLoad.then(function(data){
-                customer={"id":customerId};
-                customer=dataLoop(data,customer);
+                customer={};
+                customer=findItemById(data,customerId);
                 return angular.copy(customer);
-            }).catch(onError);
+            })
          },
          
          customerPatch: function(c){
             return dataLoad.then(function(data){
                 //validation
                 var valid = tv4.validateMultiple(c, schema);
+               // console.log(valid);
                 if(!valid.valid){
                     return valid;
                 }else{
-                    cNew=dataLoop(data,c,true);
-                    return angular.copy(cNew);
+                     data = angular.merge({},data,c);
+                    console.log(data);
+                    return c;
                 }
             });
          }
          
         
 }
-     function dataLoop(data,c,patch){
+     function findItemById(data,id){
         for(var i=0;i<data.length;i++){
-            if(data[i].id==c.id)
+            if(data[i].id==id)
                 break;
         }
-         if(patch){
-            data[i] = angular.merge({},data[i],c);
-            LS.setData(data,"cutomers");
-         }
-        
          return data[i];
      }
      
@@ -221,25 +220,18 @@ articleServices.factory('articles', ['$resource',
          if(customers){
             dataLoad = $q.resolve(customers);
          }
-             
          else
              dataLoad = $http.get(baseUrl).then(function(response){
                 LS.setData(response.data,"cutomers");
-                 
                 return response.data;
             }).catch(function(e) { throw { status: e.staus, message: e.statusText }});
             dataLoad.catch(onError);
-         
          return dataLoad;
-         
-         
-         
      }
      
      function onError(error){
-         $log.error();
-         
-        $log.error({ status: error.status, message: error.message, source: 'customerData'});
+        $log.error(error);
+         $log.error({ status: error.status, message: error.message, source: 'customerData'});
      }
      
  }]);

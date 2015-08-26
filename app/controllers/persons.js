@@ -168,6 +168,7 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
     
     $scope.quickSave=function(c){
         customerData.customerPatch(c).then(function(data){
+            //console.log(data);
             if(data.valid===false){
                 alert("Error on partial udpdate, please check data type!");
             }else{
