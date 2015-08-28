@@ -198,8 +198,10 @@ articleServices.factory('articles', ['$resource',
                 if(!valid.valid){
                     return valid;
                 }else{
-                     data = angular.merge({},data,c);
+                   // console.log(angular.merge({},findItemById(data,c.id),c));
+                    angular.merge(findItemById(data,c.id),c);
                     console.log(data);
+                    LS.setData(data,"cutomers");
                     return c;
                 }
             });
