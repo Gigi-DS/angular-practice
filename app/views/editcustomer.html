@@ -33,8 +33,15 @@
         <input type="text" class="form-control" id="hobby" placeholder="hobby" ng-model="customer.hobby" required>
       </div>
         <div class="form-group">
-        <label for="age">Birthday: (ex.year/month/day)</label>
-        <input type="text" class="form-control" id="age" placeholder="age" ng-model="customer.age" required>
+        <label for="age">Birthday:</label>
+        <input type="text" class="form-control" id="age" name="age" placeholder="age" ng-model="customer.age" ng-required="true">
+            <div class="alert alert-danger" role="alert" ng-show="updatecustomer.lastname.$touched && updatecustomer.lastname.$error.minlength" ng-messages="updatecustomer.lastname.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="updatecustomer.lastname.$error.required" ng-message="updatecustomer.lastname.$error.required">This fiel is required</li>
+                <li ng-show="updatecustomer.lastname.$error.minlength" ng-message="updatecustomer.lastname.$error.minlength">Must enter min. 2 chars</li>
+              </ul>
+            </div>
       </div>
         
       <button type="submit" class="btn btn-success btn-xs">Submit</button>

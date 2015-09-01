@@ -173,6 +173,9 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
                 $scope.customer={};
                 refresh();
                 alertService.display("Edited successfully updated!","success");
+                $scope.partupdate.$setUntouched();
+               // console.log($scope.partupdate);
+            
             
         }, function(error){
 //            console.log(error.message);

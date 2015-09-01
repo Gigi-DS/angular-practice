@@ -35,7 +35,7 @@ blogApp.config(['$routeProvider',function($routeProvider){
         templateUrl: 'app/views/editcustomer.html',
         controller: "editCustCtrl"
    })
-    .when('/partialupdate',{
+    .when('/partialupdate/:customerId',{
         templateUrl: 'app/views/partialupdate.html',
         controller: 'partialUpdtCtrl'
     })

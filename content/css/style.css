@@ -37,3 +37,16 @@ label {
 .fade-in-out.ng-hide {
   opacity: 0;
 }
+
+
+.part-update input.ng-invalid.ng-touched {
+    background-color: #FA787E;
+  }
+
+  .part-update input.ng-valid.ng-touched {
+    background-color: #78FA89;
+  }
+
+.part-update input.ng-untouched{
+    background-color: #ffffff;
+}

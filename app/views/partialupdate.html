@@ -1,4 +1,23 @@
+<!--
+<div class="panel panel-default fade-in-out" style="background-color:#F8F8F8;">
+        <div class="panel-body">
+            <img ng-src="img/close.png" width="20" class="pull-right" ng-click="close()" />
+        <h5>Quick Edit</h5>
+            <form name="partupdate" novalidate class="part-update">
+                <input type="number" class="number" name="id" value="{{customer.id}}" ng-model="customer.id" ng-required="true" disabled title="bla" /><br>
+                <input type="text" name="name" value="{{customer.name}}" ng-model="customer.name" ng-required="true" ng-minlength="4" ng-max-length="15" />
+                <input type="text" name="lastname" value="{{customer.lastname}}" ng-model="customer.lastname" ng-required="true" ng-minlength="4" ng-max-length="20" />
+                <input type="text" name="hobby" value="{{customer.hobby}}" ng-model="customer.hobby" ng-required="true" />
+                <input type="text" name="age" value="{{customer.age}}" ng-model="customer.age" ng-required="true" />
+                <button class="btn btn-success btn-xs" ng-click="quickSave(customer)">save</button>
+                <button class="btn btn-danger btn-xs" ng-click="close()">cancel</button>
+            </form>
+        </div>
+    </div>
 
+-->
+
+<!--
 
 <div class="col-md-6 col-md-offset-3 ">
     <div class="jumbotron">
@@ -9,7 +28,7 @@
       <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="name" ng-model="customer.name" required ng-minlength="2" ng-value="customer.name">
-<!--          error message-->
+          error message
           <div class="alert alert-danger" role="alert" ng-show="updatecustomer.name.$touched && updatecustomer.name.$error.minlength" ng-messages="updatecustomer.name.$error">
               <span class="sr-only">Error:</span>
               <ul>
@@ -41,6 +60,70 @@
       <button type="submit" class="btn btn-success btn-xs">Submit</button>
     </form>
         <button class="btn btn-danger btn-xs"  ng-click="removeData(customer.id)">Remove</button>
+      <button class="btn btn-warning btn-xs"  ng-click="redirect('#/persons/','')">Cancel</button>
+    </div>
+</div>-->
+
+
+
+
+
+<div class="col-md-6 col-md-offset-3 ">
+    <div class="jumbotron">
+        <div>
+            <h3>Quick Edit</h3>
+           <h5>Customer Id: {{customer.id}}</h5>
+        </div>
+    <form name="updatecustomer" novalidate ng-submit="quickSave(customer)" class="part-update">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="name" ng-model="customer.name" ng-required="true" ng-minlength="3" ng-value="customer.name">
+<!--          error message-->
+          <div class="alert alert-danger" role="alert" ng-show="updatecustomer.name.$touched && (updatecustomer.name.$error.minlength || updatecustomer.name.$error.required)" ng-messages="updatecustomer.name.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="updatecustomer.name.$error.required">This fiel is required</li>
+                <li ng-show="updatecustomer.name.$error.minlength" ng-message="updatecustomer.name.$error.minlength">Must enter min. 3 chars</li>
+              </ul>
+            </div>
+      </div>
+        <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="lastname" ng-model="customer.lastname" ng-required="true" ng-minlength="2">
+            <div class="alert alert-danger" role="alert" ng-show="updatecustomer.lastname.$touched && (updatecustomer.lastname.$error.minlength || updatecustomer.lastname.$error.required)" ng-messages="updatecustomer.lastname.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="updatecustomer.lastname.$error.required">This fiel is required</li>
+                <li ng-show="updatecustomer.lastname.$error.minlength" ng-message="updatecustomer.lastname.$error.minlength">Must enter min. 2 chars</li>
+              </ul>
+            </div>
+      </div>
+        <div class="form-group">
+        <label for="hobby">Hobby: </label>
+        <input type="text" class="form-control" id="hobby" name="hobby" placeholder="hobby" ng-model="customer.hobby" ng-required="true" ng-minlength="3">
+            <div class="alert alert-danger" role="alert" ng-show="updatecustomer.hobby.$touched && (updatecustomer.hobby.$error.minlength || updatecustomer.hobby.$error.required)" ng-messages="updatecustomer.hobby.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="updatecustomer.hobby.$error.required">This fiel is required</li>
+                <li ng-show="updatecustomer.hobby.$error.minlength" ng-message="updatecustomer.hobby.$error.minlength">Must enter min. 3 chars</li>
+              </ul>
+            </div>
+      </div>
+        <div class="form-group">
+        <label for="age">Birthday:</label>
+        <input type="date" class="form-control" id="age" name="age" placeholder="age" ng-model="customer.age" ng-required="true" max="{{today}}">
+             <div class="alert alert-danger" role="alert" ng-show="updatecustomer.age.$touched && (updatecustomer.age.$invalid || updatecustomer.age.$error.required)" ng-messages="updatecustomer.age.$error">
+              <span class="sr-only">Error:</span>
+              <ul>
+                <li ng-show="updatecustomer.age.$error.required">This fiel is required</li>
+                <li ng-show="updatecustomer.age.$invalid" ng-message="updatecustomer.hobby.$error.minlength">Please enter a valid date (birthday)!</li>
+              </ul>
+            </div>
+      </div>
+        
+      <button type="submit" class="btn btn-success btn-xs">Submit</button>
+    </form>
+<!--        <button class="btn btn-danger btn-xs"  ng-click="removeData(customer.id)">Remove</button>-->
       <button class="btn btn-warning btn-xs"  ng-click="redirect('#/persons/','')">Cancel</button>
     </div>
 </div>

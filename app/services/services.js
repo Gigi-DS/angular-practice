@@ -49,7 +49,7 @@ articleServices.factory('articles', ['$resource',
                     "name":{"type":"string"},
                     "lastname":{"type":"string"},
                     "hobby":{"type":"string"},
-                    "age":{"type":"string"}
+                    "age":{"type":"object"}
                 }
             };
      
@@ -182,6 +182,7 @@ articleServices.factory('articles', ['$resource',
             return dataLoad.then(function(data){
                 customer={};
                 customer=findItemById(data,customerId);
+                console.log(customerId);
                 return angular.copy(customer);
             })
          },
