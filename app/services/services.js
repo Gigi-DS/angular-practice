@@ -56,15 +56,14 @@ articleServices.factory('articles', ['$resource',
     // throw('test');
      init();
      return{ 
-//         ,sort,direction,pageIndex,pageSize            ,pageIndex,pageSize,sortKey, sortDirection
+//         sort, direction, pageIndex, pageSize, pageIndex, pageSize, sortKey, sortDirection
         getData: function(search,sortKey, sortReverse, pageIndex, pageSize)
         {
             return dataLoad.then(function(data) {
-                //console.log("from getData: \n"+data);
                 //total number of pagination
                 pages = Math.ceil(data.length / pageSize);
                 
-                //if isset searc && search module
+                //if isset search && search module
                 if(search){
                   function searchArr(search){
                         var results = [];
@@ -73,14 +72,11 @@ articleServices.factory('articles', ['$resource',
                                data[i].name.toLowerCase()==search.toLowerCase() || 
                                data[i].lastname.toLowerCase()==search.toLowerCase() || 
                                data[i].hobby.toLowerCase()==search.toLowerCase())
-                                results.push(data[i]);
+                               results.push(data[i]);
                         }
                       return results;
                     }
                     data = searchArr(search);
-                        
-//                    var seachName = $filter('filter')(data,{{name: search} || {lastname: search}},false);
-//                   data=seachName;
                 }
                 var cout = data.length;
 //                if isset sort && sortDirection && sort module
@@ -138,7 +134,7 @@ articleServices.factory('articles', ['$resource',
          addCustomer: function(newCustomer){
              var valid = tv4.validateMultiple(newCustomer, schema);
                 if(!valid.valid){
-                    return valid;
+                   return $q.reject(valid.errors[0]);
                 }else{
                     return dataLoad.then(function(data){
                      //validation
@@ -163,12 +159,12 @@ articleServices.factory('articles', ['$resource',
          },
          
          updateCustomer: function(customer){
-            return dataLoad.then(function(data){
-                //validation
-                var valid = tv4.validateMultiple(customer, schema);
+             var valid = tv4.validateMultiple(customer, schema);
                 if(!valid.valid){
-                    return valid;
-                }else{
+                    //console.log(valid);
+                    return $q.reject(valid.errors[0]);
+                }
+            return dataLoad.then(function(data){
                     arr = [];
                     angular.forEach(data,function(value, key){
                         if(value.id!=customer.id) arr.push(value);
@@ -178,7 +174,7 @@ articleServices.factory('articles', ['$resource',
                     LS.setData(data,"cutomers");
                     dataLoad= $q.resolve(data);
                     return angular.copy(arr);
-                }
+                
             })
          },
          
@@ -191,19 +187,18 @@ articleServices.factory('articles', ['$resource',
          },
          
          customerPatch: function(c){
-            return dataLoad.then(function(data){
-                //validation
-                var valid = tv4.validateMultiple(c, schema);
-               // console.log(valid);
+             // console.log(valid);
+             var valid = tv4.validateMultiple(c, schema);
                 if(!valid.valid){
-                    return valid;
-                }else{
-                   // console.log(angular.merge({},findItemById(data,c.id),c));
-                    angular.merge(findItemById(data,c.id),c);
-                    console.log(data);
-                    LS.setData(data,"cutomers");
-                    return c;
+                    //console.log(valid);
+                    return $q.reject(valid.errors[0]);
                 }
+             
+            return dataLoad.then(function(data){
+                    angular.merge(findItemById(data,c.id),c);
+                    LS.setData(data,"cutomers");
+                   return c;
+                
             });
          }
          

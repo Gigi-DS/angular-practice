@@ -1,4 +1,4 @@
-blogApp.controller("editCustCtrl",['$scope','$window','$routeParams','$log','$location','customerData',function($scope,$window,$routeParams,$log,$location,customerData){
+blogApp.controller("editCustCtrl",['$scope','$window','$routeParams','$log','$location','customerData','alertService',function($scope,$window,$routeParams,$log,$location,customerData,alertService){
     $scope.customerId=$routeParams.customerId;
     $scope.customer = {};
     init();
@@ -17,18 +17,16 @@ blogApp.controller("editCustCtrl",['$scope','$window','$routeParams','$log','$lo
     
     $scope.updateCustomer=function(customer){
         customerData.updateCustomer(customer).then(function(data){
-                if(data.valid===false){
-                    $window.alert("Error on updating cunstomer, please check type of variables");
-                }else{
-                    $window.alert("Customer Succesefully Updated");
-                    $location.path("/persons");
-                }
+            $location.path("/persons");
+            alertService.display("Customer successefuly updated!","success");
+        },
+        function(error){
+            alertService.display(error.message,"danger");
         });
     }
     
     //    removing data
    $scope.removeData=function(index){
-       // $window.alert("remove "+index);
        if(confirm("Sure to DELETE?")){
             customerData.removeItem(index).then(function(data){
                 $location.path("/persons");

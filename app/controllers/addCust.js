@@ -1,16 +1,16 @@
-blogApp.controller("addCustCtrl",['$scope','$log','LS','$window','customerData',function($scope,$log,LS,$window,customerData){
+blogApp.controller("addCustCtrl",['$scope','$log','LS','$window','customerData','alertService',function($scope,$log,LS,$window,customerData,alertService){
      $scope.cust={id: 0,name: "",lastname: "",hobby: "",age: ""};
       
     
     
     $scope.addCust=function(newCust){
      customerData.addCustomer(newCust).then(function(data){
-         if(data.valid===false){
-            alert("Adding new customer error, please check data type");
-         }else{
             $scope.cust=data;
-            $window.alert("Customer Successeful added!");
-         }
+            $window.location ="#/persons";
+            alertService.display("Customer successefuly added!","success");
+     },
+    function(error){
+        alertService.display(error.message,"danger");
      });
      
     }

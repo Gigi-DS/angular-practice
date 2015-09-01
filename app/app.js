@@ -6,7 +6,8 @@
 var blogApp = angular.module('someBlogApp',[
 	'ngRoute',
 	'someBlogServices',
-     'ngAnimate'
+    'ngAnimate',
+    'alertServices'
 ]);
 
 blogApp.controller('testCtrl',['$scope','$http', function($scope,$http){

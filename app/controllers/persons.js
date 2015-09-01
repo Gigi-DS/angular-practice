@@ -70,7 +70,7 @@
 ////finish practice with functional programming
 //  var Validate = require('validate-arguments');
 //  console.log(Validate);
-blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerData','$log','$location','$filter','$http',function($scope,$routeParams,$window,customerData,$log,$location,$filter,$http){
+blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerData','$log','$location','$filter','$http','alertService',function($scope,$routeParams,$window,customerData,$log,$location,$filter,$http,alertService){
     //setting empty array for records
 	$scope.persons=[];
     $scope.search = "";
@@ -169,14 +169,14 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
     $scope.quickSave=function(c){
         customerData.customerPatch(c).then(function(data){
             //console.log(data);
-            if(data.valid===false){
-                alert("Error on partial udpdate, please check data type!");
-            }else{
                 $scope.quickEdit = false;
                 $scope.customer={};
                 refresh();
-            }
+                alertService.display("Edited successfully updated!","success");
             
+        }, function(error){
+//            console.log(error.message);
+            alertService.display(error.message,"danger");
         });
     }
     

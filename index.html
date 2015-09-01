@@ -76,9 +76,7 @@
 			</nav>
 		</div><!-- .mainContainer -->
          <div class="container"  ng-controller="alertCtrl">
-                <div class="alert alert-success fade-in-out" ng-animate="animate" role="alert" ng-show="message">Hellow World</div>
-
-             
+                <div class="fade-in-out alert" ng-class="'alert-'+type" ng-animate="animate" role="alert" ng-show="messageShow">{{message}}</div>
         </div>
 		<div class="container">
 			<div data-ng-view></div>
