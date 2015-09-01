@@ -66,12 +66,12 @@
             <td>Partial update</td>
         </tr>
         <tr ng-repeat="person in persons track by $index|orderBy:sortKey:reverse" id="{{person.id}}" data="{{person.id}}" class="cursor:pointer">
-            <td ng-click="redirect('#/editcustomer/',person.id);" >{{person.id}}</td>
-            <td ng-click="redirect('#/editcustomer/',person.id);" >{{person.name}}</td>
-            <td ng-click="redirect('#/editcustomer/',person.id);" >{{person.lastname}}</td>
-            <td ng-click="redirect('#/editcustomer/',person.id);" >{{person.hobby}}</td>
-            <td ng-click="redirect('#/editcustomer/',person.id);" >{{person.birthday}}</td>
-            <td><a href="#/partialupdate/{{person.id}}"><img ng-src="img/edit.png" width="20" title="quick edit {{person.name+' '+person.lastname}}"/></a></td>
+            <td ng-click="fullUpdate(person.id);" >{{person.id}}</td>
+            <td ng-click="fullUpdate(person.id);" >{{person.name}}</td>
+            <td ng-click="fullUpdate(person.id);" >{{person.lastname}}</td>
+            <td ng-click="fullUpdate(person.id);" >{{person.hobby}}</td>
+            <td ng-click="fullUpdate(person.id);" >{{person.birthday}}</td>
+            <td ng-click="partUpdate(person.id);"><img ng-src="img/edit.png" width="20" title="quick edit {{person.name+' '+person.lastname}}"/></td>
 <!--            <td><img ng-src="img/edit.png" width="20" title="quick edit {{person.name+' '+person.lastname}}" ng-click="showCustomer(person.id)" /></td>-->
         </tr>
     </table>

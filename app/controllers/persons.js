@@ -166,6 +166,14 @@ blogApp.controller('personsCtrl',['$scope','$routeParams','$window','customerDat
         $scope.quickEdit = false;
    }
     
+    $scope.partUpdate = function(id){
+        $location.path("/partialupdate/"+id);
+    }
+    
+     $scope.fullUpdate = function(id){
+        $location.path("/editcustomer/"+id);
+    }
+    
     $scope.quickSave=function(c){
         customerData.customerPatch(c).then(function(data){
             //console.log(data);
